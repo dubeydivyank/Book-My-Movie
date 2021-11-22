@@ -5,7 +5,7 @@ const Home = () => {
 	return (
 		<div>
 			<Header />
-			<h2>Home.js Upgrad Sucks</h2>
+			<h2>Home.js</h2>
 		</div>
 	);
 };
