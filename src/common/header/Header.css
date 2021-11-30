@@ -23,3 +23,7 @@
 		transform: rotateY(359deg);
 	}
 }
+
+.login-register-form {
+	margin: 20px;
+}
