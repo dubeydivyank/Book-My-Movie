@@ -5,7 +5,7 @@
 	font-size: 1rem;
 }
 
-.released-movies-container {
+.released-movies-and-filters-container {
 	display: flex;
 	flex-direction: row;
 }
