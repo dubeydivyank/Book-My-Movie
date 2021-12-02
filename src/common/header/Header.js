@@ -11,6 +11,7 @@ import { FormControl } from "@material-ui/core";
 import { Input } from "@material-ui/core";
 import { InputLabel } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 // TABPANEL FROM MATERIAL UI
 function TabPanel(props) {
@@ -70,8 +71,13 @@ export default function Header(props) {
 	//HANDLE USER LOGIN REQUEST
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [usernameIsRequired, setUsernameIsRequired] = useState(false);
+	const [passwordIsRequired, setPasswordIsRequired] = useState(false);
+
 	function handleLoginRequest(e) {
 		e.preventDefault();
+		setUsernameIsRequired(username === "" ? true : false);
+		setPasswordIsRequired(password === "" ? true : false);
 		const userCredentials = window.btoa(username + ":" + password);
 		const loginRequest = {
 			method: "POST",
@@ -137,14 +143,25 @@ export default function Header(props) {
 		});
 	}
 
-	//REGESTERING NEW USER
+	//HANDLE USER REGISTRATION REQUEST
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
 	const [contactNo, setContactNo] = useState("");
+	const [firstnameIsRequired, setFirstnameIsRequired] = useState(false);
+	const [lastnameIsRequired, setLastnameIsRequired] = useState(false);
+	const [emailIsRequired, setEmailIsRequired] = useState(false);
+	const [contactNoIsRequired, setContactNoISRequired] = useState(false);
+	const [PasswordIsRequired, setPasswordRequired] = useState(false);
 	const [registrationSuccessMsg, setRegistrationSuccessMsg] = useState();
+
 	function handleRegistrationRequest(e) {
 		e.preventDefault();
+		setFirstnameIsRequired(firstName === "" ? true : false);
+		setLastnameIsRequired(lastName === "" ? true : false);
+		setEmailIsRequired(email === "" ? true : false);
+		setPasswordRequired(password === "" ? true : false);
+		setContactNoISRequired(contactNo === "" ? true : false);
 		const userDetails = {
 			email_address: email,
 			first_name: firstName,
@@ -165,8 +182,6 @@ export default function Header(props) {
 			.then((response) => {
 				if (response.id) {
 					setRegistrationSuccessMsg("Registration successful. Please login!");
-				} else {
-					setRegistrationSuccessMsg(response.message);
 				}
 			});
 	}
@@ -229,114 +244,139 @@ export default function Header(props) {
 					{/* LOGIN FORM */}
 					<TabPanel value={tabValue} index={0}>
 						<div style={{ textAlign: "center" }}>
-							<form
-								id="login-form"
-								className="login-register-form"
-								onSubmit={(e) => {
+							<FormControl required>
+								<InputLabel htmlFor="userName">Username</InputLabel>
+								<Input
+									id="username"
+									value={username}
+									onChange={({ target }) => setUsername(target.value)}
+								/>
+								{usernameIsRequired && (
+									<FormHelperText>
+										<span className="required-error">required</span>
+									</FormHelperText>
+								)}
+							</FormControl>
+							<br />
+							<FormControl required>
+								<InputLabel htmlFor="password">Password</InputLabel>
+								<Input
+									id="password"
+									value={password}
+									onChange={({ target }) => setPassword(target.value)}
+									type="password"
+								/>
+								{passwordIsRequired && (
+									<FormHelperText>
+										<span className="required-error">required</span>
+									</FormHelperText>
+								)}
+							</FormControl>
+							<br />
+							<br />
+							<Button
+								type="submit"
+								variant="contained"
+								color="primary"
+								onClick={(e) => {
 									handleLoginRequest(e);
 								}}
+								style={{ float: "center" }}
 							>
-								<FormControl required>
-									<InputLabel htmlFor="userName">Username</InputLabel>
-									<Input
-										id="username"
-										value={username}
-										onChange={({ target }) => setUsername(target.value)}
-									/>
-								</FormControl>
-								<br />
-								<FormControl required>
-									<InputLabel htmlFor="password">Password</InputLabel>
-									<Input
-										id="password"
-										value={password}
-										onChange={({ target }) => setPassword(target.value)}
-										type="password"
-									/>
-								</FormControl>
-								<br />
-								<br />
-								<Button
-									type="submit"
-									variant="contained"
-									color="primary"
-									style={{ float: "center" }}
-								>
-									LOGIN
-								</Button>
-							</form>
+								LOGIN
+							</Button>
 						</div>
 					</TabPanel>
 
 					{/* REGISTRATION FORM */}
 					<TabPanel value={tabValue} index={1}>
 						<div style={{ textAlign: "center" }}>
-							<form
-								id="register-form"
-								className="login-register-form"
-								onSubmit={(e) => {
+							<FormControl required={true}>
+								<InputLabel htmlFor="first-name">First Name</InputLabel>
+								<Input
+									id="first-name"
+									value={firstName}
+									onChange={({ target }) => setFirstName(target.value)}
+								/>
+								{firstnameIsRequired && (
+									<FormHelperText>
+										<span className="required-error">required</span>
+									</FormHelperText>
+								)}
+							</FormControl>
+							<br />
+							<FormControl required={true}>
+								<InputLabel htmlFor="last-name">Last Name</InputLabel>
+								<Input
+									id="last-name"
+									value={lastName}
+									onChange={({ target }) => setLastName(target.value)}
+								/>
+								{lastnameIsRequired && (
+									<FormHelperText>
+										<span className="required-error">required</span>
+									</FormHelperText>
+								)}
+							</FormControl>
+							<br />
+							<FormControl required={true}>
+								<InputLabel htmlFor="email-address">Email</InputLabel>
+								<Input
+									id="email-address"
+									value={email}
+									onChange={({ target }) => setEmail(target.value)}
+								/>
+								{emailIsRequired && (
+									<FormHelperText>
+										<span className="required-error">required</span>
+									</FormHelperText>
+								)}
+							</FormControl>
+							<br />
+							<FormControl required={true}>
+								<InputLabel htmlFor="new-password">Password</InputLabel>
+								<Input
+									id="new-password"
+									type="password"
+									value={password}
+									onChange={({ target }) => setPassword(target.value)}
+								/>
+								{PasswordIsRequired && (
+									<FormHelperText>
+										<span className="required-error">required</span>
+									</FormHelperText>
+								)}
+							</FormControl>
+							<br />
+							<FormControl required={true}>
+								<InputLabel htmlFor="contact-no">Contact No.</InputLabel>
+								<Input
+									id="contact-no"
+									value={contactNo}
+									onChange={({ target }) => setContactNo(target.value)}
+								/>
+								{contactNoIsRequired && (
+									<FormHelperText>
+										<span className="required-error">required</span>
+									</FormHelperText>
+								)}
+							</FormControl>
+							<br />
+							<br />
+							<span>{registrationSuccessMsg}</span>
+							<br />
+							<br />
+							<Button
+								variant="contained"
+								color="primary"
+								style={{ float: "center" }}
+								type="submit"
+								onClick={(e) => {
 									handleRegistrationRequest(e);
 								}}
 							>
-								<FormControl required={true}>
-									<InputLabel htmlFor="first-name">First Name</InputLabel>
-									<Input
-										id="first-name"
-										value={firstName}
-										onChange={({ target }) => setFirstName(target.value)}
-									/>
-								</FormControl>
-								<br />
-								<FormControl required={true}>
-									<InputLabel htmlFor="last-name">Last Name</InputLabel>
-									<Input
-										id="last-name"
-										value={lastName}
-										onChange={({ target }) => setLastName(target.value)}
-									/>
-								</FormControl>
-								<br />
-								<FormControl required={true}>
-									<InputLabel htmlFor="email-address">Email</InputLabel>
-									<Input
-										id="email-address"
-										value={email}
-										onChange={({ target }) => setEmail(target.value)}
-									/>
-								</FormControl>
-								<br />
-								<FormControl required={true}>
-									<InputLabel htmlFor="new-password">Password</InputLabel>
-									<Input
-										id="new-password"
-										type="password"
-										value={password}
-										onChange={({ target }) => setPassword(target.value)}
-									/>
-								</FormControl>
-								<br />
-								<FormControl required={true}>
-									<InputLabel htmlFor="contact-no">Contact No.</InputLabel>
-									<Input
-										id="contact-no"
-										value={contactNo}
-										onChange={({ target }) => setContactNo(target.value)}
-									/>
-								</FormControl>
-								<br />
-								<br />
-								<span>{registrationSuccessMsg}</span>
-								<br />
-								<br />
-								<Button
-									variant="contained"
-									color="primary"
-									style={{ float: "center" }}
-									type="submit"
-								>
-									REGISTER
-								</Button>
-							</form>
+								REGISTER
+							</Button>
 						</div>
 					</TabPanel>
 				</Modal>

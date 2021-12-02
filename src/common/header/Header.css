@@ -27,3 +27,7 @@
 .login-register-form {
 	margin: 20px;
 }
+
+.required-error {
+	color: red;
+}
