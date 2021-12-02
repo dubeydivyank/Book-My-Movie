@@ -10,6 +10,7 @@ import { Typography } from "@material-ui/core";
 import { FormControl } from "@material-ui/core";
 import { Input } from "@material-ui/core";
 import { InputLabel } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 // TABPANEL FROM MATERIAL UI
 function TabPanel(props) {
@@ -144,7 +145,6 @@ export default function Header(props) {
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
 	const [contactNo, setContactNo] = useState("");
-	const [registrationSuccess, setRegistrationSuccess] = useState(false);
 	const [registrationSuccessMsg, setRegistrationSuccessMsg] = useState();
 
 	function handleRegistrationRequest(e) {
@@ -198,6 +198,22 @@ export default function Header(props) {
 					>
 						Login
 					</Button>
+				)}
+
+				{props.movieId !== undefined ? (
+					<span>
+						<Link to={"/BookShow/" + props.movieId}>
+							<Button
+								variant="contained"
+								color="primary"
+								style={{ float: "right", marginRight: "12px" }}
+							>
+								BOOK SHOW
+							</Button>
+						</Link>
+					</span>
+				) : (
+					""
 				)}
 
 				<Modal

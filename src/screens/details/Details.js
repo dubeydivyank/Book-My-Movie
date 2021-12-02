@@ -62,7 +62,7 @@ export default function (props) {
 	} else {
 		return (
 			<div>
-				<Header />
+				<Header movieId={props.match.params.id} />
 
 				{/* BACK TO HOME BUTTON */}
 				<Link to="/">
