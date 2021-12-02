@@ -1,0 +1,8 @@
+.movie-details {
+	display: flex;
+	flex-direction: row;
+}
+
+.bold-font {
+	font-weight: bold;
+}
