@@ -53,59 +53,23 @@ const modalStyle = {
 	},
 };
 
-//     HEADER FUNCTION
+//HEADER FUNCTION
 export default function Header(props) {
-	const [IsUserLoggedIn, setIsUserLoggedIn] = useState(false);
-	useEffect(() => {
-		const accessToken = sessionStorage.getItem("access-token");
-		if (accessToken) {
-			setIsUserLoggedIn(true);
-		}
-	}, []);
-
+	//OPEN/CLOSE LOGIN-REGISTER MODAL
 	const [isOpen, setIsOpen] = useState(false);
-	const updateLoginStatus = (loggedIn) => {
-		setIsUserLoggedIn(loggedIn);
-		if (isOpen) {
-			openOrCloseModal();
-		}
-	};
-
 	function openOrCloseModal() {
 		setIsOpen(!isOpen);
 	}
 
+	//HANDLE MODAL TAB VALUES
 	const [tabValue, setTabValue] = React.useState(0);
 	const handleTabValueChange = (event, newValue) => {
 		setTabValue(newValue);
 	};
 
-	function handleLogoutRequest() {
-		const logoutRequest = {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				authorization: "Bearer " + sessionStorage.getItem("access-token"),
-			},
-		};
-		fetch("/api/v1/auth/logout", logoutRequest).then((response) => {
-			if (response.status === 200) {
-				sessionStorage.removeItem("access-token");
-				updateLoginStatus(false);
-			} else {
-				console.log("Invalid access token");
-			}
-		});
-	}
-
-	/**
-	 *
-	 *
-	 *
-	 */
+	//HANDLE USER LOGIN REQUEST
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-
 	function handleLoginRequest(e) {
 		e.preventDefault();
 		const userCredentials = window.btoa(username + ":" + password);
@@ -136,17 +100,49 @@ export default function Header(props) {
 				}
 			});
 	}
-	/*
-                    
 
-   */
+	//SET USER'S LOGIN STATUS
+	const [IsUserLoggedIn, setIsUserLoggedIn] = useState(false);
+	useEffect(() => {
+		const accessToken = sessionStorage.getItem("access-token");
+		if (accessToken) {
+			setIsUserLoggedIn(true);
+		}
+	}, []);
 
+	//UPDATE USER'S LOGIN STATUS & CLOSE MODAL
+	const updateLoginStatus = (loggedIn) => {
+		setIsUserLoggedIn(loggedIn);
+		if (isOpen) {
+			openOrCloseModal();
+		}
+	};
+
+	//FUNCTION FOR LOGGING OUT
+	function handleLogoutRequest() {
+		const logoutRequest = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				authorization: "Bearer " + sessionStorage.getItem("access-token"),
+			},
+		};
+		fetch("/api/v1/auth/logout", logoutRequest).then((response) => {
+			if (response.status === 200) {
+				sessionStorage.removeItem("access-token");
+				updateLoginStatus(false);
+			} else {
+				console.log("Invalid access token");
+			}
+		});
+	}
+
+	//REGESTERING NEW USER
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
 	const [contactNo, setContactNo] = useState("");
 	const [registrationSuccessMsg, setRegistrationSuccessMsg] = useState();
-
 	function handleRegistrationRequest(e) {
 		e.preventDefault();
 		const userDetails = {
@@ -180,6 +176,7 @@ export default function Header(props) {
 			<div className="header">
 				<img className="logo" src={Logo} alt="logo" />
 
+				{/* DISPLAY LOGIN/LOGOUT BUTTON ACCORDING TO USERS LOGIN STATUS */}
 				{IsUserLoggedIn ? (
 					<Button
 						variant="contained"
@@ -200,7 +197,8 @@ export default function Header(props) {
 					</Button>
 				)}
 
-				{props.movieId !== undefined ? (
+				{/* DISPLAY BOOKSHOW BUTTON ON DETAILS SCREEN */}
+				{props.movieId !== undefined && (
 					<span>
 						<Link to={"/BookShow/" + props.movieId}>
 							<Button
@@ -212,11 +210,11 @@ export default function Header(props) {
 							</Button>
 						</Link>
 					</span>
-				) : (
-					""
 				)}
 
+				{/* LOGIN/REGISTER MODAL */}
 				<Modal
+					ariaHideApp={false}
 					isOpen={isOpen}
 					onRequestClose={openOrCloseModal}
 					contentLabel="Login-Register Modal"
@@ -228,6 +226,7 @@ export default function Header(props) {
 						<Tab label="Register" {...a11yProps(1)} />
 					</Tabs>
 
+					{/* LOGIN FORM */}
 					<TabPanel value={tabValue} index={0}>
 						<div style={{ textAlign: "center" }}>
 							<form
@@ -269,6 +268,7 @@ export default function Header(props) {
 						</div>
 					</TabPanel>
 
+					{/* REGISTRATION FORM */}
 					<TabPanel value={tabValue} index={1}>
 						<div style={{ textAlign: "center" }}>
 							<form
